@@ -1,0 +1,190 @@
+// src/components/Login.tsx
+import React, { useState } from "react";
+import Illustration from "./Illustration";
+import api from "../api";
+
+interface LoginProps {
+  onLoginSuccess: (token: string) => void;
+  switchToSignup: () => void;
+}
+
+export default function Login({ onLoginSuccess, switchToSignup }: LoginProps) {
+  const [email, setEmail] = useState<string>("");
+  const [pw, setPw] = useState<string>("");
+  const [showPw, setShowPw] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const data = await api.login(email, pw); // email used as username
+
+      if (!data.token) {
+        alert(data.message || "Login failed");
+      } else {
+        onLoginSuccess(data.token);
+      }
+    } catch (err: any) {
+      alert(err.message || "Server error");
+    }
+
+    setLoading(false);
+  }
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 20px",
+        background: "linear-gradient(135deg,#f0f4ff,#ffffff)",
+      }}
+    >
+      {/* Wrapper */}
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          maxWidth: 1100,
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 50,
+        }}
+      >
+        {/* Illustration Left */}
+        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+          <Illustration />
+        </div>
+
+        {/* Login Card Right */}
+        <div
+          style={{
+            flex: 1,
+            padding: "40px 40px",
+            borderRadius: 28,
+            background: "rgba(255,255,255,0.55)",
+            backdropFilter: "blur(18px)",
+            boxShadow: "0 8px 40px rgba(0,0,0,0.1)",
+            border: "1px solid rgba(255,255,255,0.4)",
+            animation: "fadeIn 0.5s ease-out",
+          }}
+        >
+          <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 10 }}>
+            Welcome!
+          </h1>
+          <p style={{ color: "#555", marginBottom: 30 }}>
+            Login to access your AI caption app.
+          </p>
+
+          {/* FORM */}
+          <form onSubmit={submit}>
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontWeight: 600 }}>Email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  marginTop: 6,
+                  borderRadius: 12,
+                  border: "1px solid #d1d5db",
+                  fontSize: 15,
+                  outline: "none",
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontWeight: 600 }}>Password</label>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: 12,
+                  border: "1px solid #d1d5db",
+                  marginTop: 6,
+                  paddingRight: 12,
+                }}
+              >
+                <input
+                  type={showPw ? "text" : "password"}
+                  required
+                  value={pw}
+                  onChange={(e) => setPw(e.target.value)}
+                  placeholder="Your password"
+                  style={{
+                    flex: 1,
+                    padding: "12px 16px",
+                    border: "none",
+                    outline: "none",
+                    fontSize: 15,
+                  }}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPw(!showPw)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: 16,
+                  }}
+                >
+                  {showPw ? "🙈" : "👁"}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: "100%",
+                padding: "14px",
+                borderRadius: 14,
+                background: loading
+                  ? "#6b7280"
+                  : "linear-gradient(90deg,#6366f1,#8b5cf6)",
+                color: "white",
+                fontWeight: 700,
+                border: "none",
+                cursor: loading ? "not-allowed" : "pointer",
+                fontSize: 16,
+                boxShadow: "0 6px 20px rgba(90,100,200,0.25)",
+              }}
+            >
+              {loading ? "Logging in..." : "Log In"}
+            </button>
+          </form>
+
+          {/* Signup link */}
+          <p style={{ marginTop: 18, fontSize: 15 }}>
+            New user?{" "}
+            <button
+              onClick={switchToSignup}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#4f46e5",
+                fontWeight: 600,
+                cursor: "pointer",
+                fontSize: 15,
+              }}
+            >
+              Sign up
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

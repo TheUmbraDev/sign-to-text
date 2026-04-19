@@ -1,0 +1,35 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:https": "node server.mjs",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/drawing_utils": "^0.3.1675466124",
+    "@mediapipe/hands": "^0.4.1675469240",
+    "bcryptjs": "^2.4.3",
+    "firebase": "^12.6.0",
+    "firebase-admin": "^11.11.1",
+    "lucide-react": "^0.554.0",
+    "mongodb": "^5.9.0",
+    "motion": "^12.23.24",
+    "next": "16.0.3",
+    "react": "^19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "baseline-browser-mapping": "^2.9.18",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

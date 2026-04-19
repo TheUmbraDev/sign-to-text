@@ -1,0 +1,8 @@
+flask
+flask-cors
+opencv-python
+numpy
+keras
+joblib
+mediapipe
+scikit-learn==1.3.1
